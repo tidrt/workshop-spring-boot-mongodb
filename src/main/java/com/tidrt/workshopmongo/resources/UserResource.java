@@ -1,14 +1,18 @@
 package com.tidrt.workshopmongo.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tidrt.workshopmongo.domain.User;
 import com.tidrt.workshopmongo.dto.UserDTO;
@@ -35,4 +39,14 @@ public class UserResource {
 		// to convert our user list to a user dto list 
 		return ResponseEntity.ok().body(new UserDTO(obj)); 
 	}
+	
+	@PostMapping // we need to put request body annotation to our end point accept the user  
+	public ResponseEntity<Void> insert(@RequestBody UserDTO objDto){
+		//convert our dto to user
+		User obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
+		// to have an header with the url of our new user we need this spring method
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+ 	}
 }
