@@ -36,6 +36,17 @@ public class UserService {
 		repository.deleteById(id);
 	}
 	
+	public User update(User obj) {
+		User newObj = findById(obj.getId());
+		updateData(newObj, obj);
+		return repository.save(newObj);
+	}
+
+	private void updateData(User newObj, User obj) {
+		newObj.setName(obj.getName());
+		newObj.setEmail(obj.getEmail());
+	}
+
 	// create the fromDTO method here because we have and repository that can access the database
 	public User fromDTO(UserDTO objDto) {
 		return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
