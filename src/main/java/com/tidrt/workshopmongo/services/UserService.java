@@ -30,6 +30,12 @@ public class UserService {
 		return repository.insert(obj);
 	}
 	
+	public void delete(String id) {
+		// to do a research first, if do not find our id would throw an exception
+		findById(id);
+		repository.deleteById(id);
+	}
+	
 	// create the fromDTO method here because we have and repository that can access the database
 	public User fromDTO(UserDTO objDto) {
 		return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
