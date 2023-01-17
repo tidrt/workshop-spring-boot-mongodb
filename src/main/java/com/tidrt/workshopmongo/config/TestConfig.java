@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.tidrt.workshopmongo.domain.Post;
 import com.tidrt.workshopmongo.domain.User;
+import com.tidrt.workshopmongo.dto.AuthorDTO;
 import com.tidrt.workshopmongo.repository.PostRepository;
 import com.tidrt.workshopmongo.repository.UserRepository;
 
@@ -35,10 +36,10 @@ public class TestConfig implements CommandLineRunner {
 		User alex = new User(null, "Alex Green", "alex@gmail.com");
 		User bob = new User(null, "Bob Grey", "bob@gmail.com");
 		
-		userRepository.saveAll(Arrays.asList(maria, alex, bob));
+		userRepository.saveAll(Arrays.asList(maria, alex, bob)); // we need that this save comes before our post, to our dto comes with matching id's
 		
-		Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu Viagem!", "Vou viajar para São Paulo. Abraços!", maria);
-		Post post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia", "Acordei feliz hoje!", maria);
+		Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu Viagem!", "Vou viajar para São Paulo. Abraços!", new AuthorDTO(maria));
+		Post post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia", "Acordei feliz hoje!", new AuthorDTO(maria));
 		
 		postRepository.saveAll(Arrays.asList(post1, post2));
 		
