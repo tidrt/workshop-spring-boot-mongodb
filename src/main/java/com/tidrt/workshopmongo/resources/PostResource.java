@@ -1,5 +1,6 @@
 package com.tidrt.workshopmongo.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,18 @@ public class PostResource {
 		List<Post> list = service.findByTitle(text);
 		// to convert our user list to a user dto list 
 		return ResponseEntity.ok().body(list); 
+	}
+	
+	@RequestMapping(value="/fullsearch", method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> fullSearch(
+			@RequestParam(value = "text", defaultValue = "") String text,
+			@RequestParam(value = "text", defaultValue = "") String minDate,
+			@RequestParam(value = "text", defaultValue = "") String maxDate){
+		text = URL.decodeParam(text);
+		Date min = URL.convertDate(minDate, new Date(0L));
+		Date max = URL.convertDate(maxDate, new Date());
+		List<Post> list = service.fullSearch(text, min, max);
+		// to convert our user list to a user dto list 
+		return ResponseEntity.ok().body(list);
 	}
 }
